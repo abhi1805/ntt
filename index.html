@@ -1,0 +1,75 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    </head>
+    <body>
+        <div id="app">
+            <input type="text" v-model="intf_name">
+            <button @click="Get_single_interface(intf_name)" type="button" class="btn btn-primary">Get Interface</button>
+            <button @click="Get_interfaces()" type="button" class="btn btn-primary">Get Interfaces</button>
+            <div>
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Interface</th>
+                        <th scope="col">IP Address</th>
+                        <th scope="col">SubnetMask</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(item,index) in interfaces" :key="index">
+                        <td>{{ item.int_name }}</td>
+                        <td>{{ item.ip_address }}</td>
+                        <td>{{ item.mask }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>{{ item.status }}</td>
+                      </tr>
+                    </tbody>
+            </div>
+            <ul v-if ="interface_s" >
+                <li>{{ interface_s.int_name }}</li>
+                <li>{{ interface_s.ip_address }}</li>
+                <li>{{ interface_s.mask }}</li>
+                <li>{{ interface_s.description }}</li>
+                <li>{{ interface_s.status }}</li>
+
+              </ul>
+        </div>
+        
+    </body>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data:{
+                interfaces : null,
+                interface_s:null,
+                intf_name:null
+            },
+        methods:{
+            Get_interfaces() {
+                axios.get("http://localhost:5000/interfaces").then(response => {
+                    this.interfaces = response.data
+                    return response.data
+                })
+
+            },
+            Get_single_interface(intf_name) {
+                axios.get("http://localhost:5000/interfaces" + "/" + intf_name + "/").then(response => {
+                    this.interface_s = response.data
+                    return response.data
+                })
+            }
+        }
+    })
+    </script>
+
+</html>
+
