@@ -1,7 +1,6 @@
 from flask import Flask
 from flask import jsonify
 from flask_cors import CORS
-from scrapli.driver.core import IOSXEDriver
 from netmiko import ConnectHandler
 
 device={"host":"127.0.0.1",
