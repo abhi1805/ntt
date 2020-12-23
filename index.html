@@ -63,6 +63,9 @@
             },
             Get_single_interface(intf_name) {
                 axios.get("http://localhost:5000/interfaces" + "/" + intf_name + "/").then(response => {
+                    if (response.data.error) {
+                        window.alert(response.data.error)
+                    }
                     this.interface_s = response.data
                     return response.data
                 })
