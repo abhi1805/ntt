@@ -9,9 +9,11 @@
     </head>
     <body>
         <div id="app">
+            <input type="text" v-model="device_ip">
+            <button @click="connect(device_ip)" type="button" class="btn btn-primary">Enter device ip to connect</button>
+			<button @click="Get_interfaces()" type="button" class="btn btn-primary">Click to Get ALL Interfaces</button>
             <input type="text" v-model="intf_name">
             <button @click="Get_single_interface(intf_name)" type="button" class="btn btn-primary">Enter your Interface name (Replace / with -)</button>
-            <button @click="Get_interfaces()" type="button" class="btn btn-primary">Click to Get ALL Interfaces</button>
             <div>
                 <table class="table">
                     <thead>
@@ -66,7 +68,14 @@
                     if (response.data.error) {
                         window.alert(response.data.error)
                     }
+                    
                     this.interface_s = response.data
+                    return response.data
+                })
+            },
+            connect(device_ip) {
+                axios.get("http://localhost:5000/connect/" + device_ip +"/").then(response => {
+                    this.interfaces = response.data
                     return response.data
                 })
             }
@@ -75,4 +84,3 @@
     </script>
 
 </html>
-
